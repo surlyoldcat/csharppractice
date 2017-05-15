@@ -45,9 +45,11 @@
     <Compile Include="BalancedBrackets.cs" />
     <Compile Include="ContactTrie.cs" />
     <Compile Include="FibonacciCalc.cs" />
+    <Compile Include="MedianTracker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RansomNote.cs" />
+    <Compile Include="Scratch.cs" />
     <Compile Include="SomeInputs.cs" />
     <Compile Include="TwoStackQueue.cs" />
   </ItemGroup>

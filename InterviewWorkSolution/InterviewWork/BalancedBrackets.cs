@@ -10,18 +10,20 @@ namespace InterviewWork
     {
         public static bool IsBalanced(string input)
         {
+            char[] openBracketChars = { '{', '[', '(' };
             if (String.IsNullOrEmpty(input))
             {
                 return false;
             }
 
             var inputChars = input.ToArray();
+
             Stack<char> openBrackets = new Stack<char>(inputChars.Length);
 
             for (int i = 0; i < inputChars.Length; i++)
             {
                 char c = inputChars[i];
-                if (IsOpenBracket(c))
+                if (openBracketChars.Contains(c))
                 {
                     openBrackets.Push(c);
                 }
@@ -41,7 +43,8 @@ namespace InterviewWork
                 }
 
             }
-            return true;
+
+            return openBrackets.Count == 0;
 
         }
 
@@ -62,27 +65,6 @@ namespace InterviewWork
             return false;
         }
 
-        private static bool IsOpenBracket(char c)
-        {
-            switch(c)
-            {
-                case '[':
-                case '{':
-                case '(':
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        private static string PrintStack(Stack<char> stk)
-        {
-            string s = "";
-            foreach(var val in stk)
-            {
-                s += val + Environment.NewLine;
-            }
-            return s;
-        }
+        
     }
 }
