@@ -19,5 +19,6 @@ namespace ProjectETests.Utilities
             string s = $"Inputs were {inputs}, results were {results}.";
             TestUtils.WriteOut(s);
         }
+
     }
 }
