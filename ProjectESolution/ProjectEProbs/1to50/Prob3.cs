@@ -30,10 +30,36 @@ namespace ProjectEProbs._1to50
             // how to bridge gap between sqrt of big number
             // and precached list of known primes?
 
+
+
             return -1;
         }
 
         
+        public static long[] SimpleSieve(int max)
+        {
+            bool[] marks = new bool[max];
+            for(long p = 2; p < max; p++)
+            {
+                if (!marks[p])
+                {
+                    for (long q = p * p; q < max; q += p)
+                    {
+                        if (!marks[q])
+                            marks[q] = true;
+                    }
+                }
+                
+
+            }
+            List<long> primes = new List<long>(marks.Count(m => !m));
+            for (long i = 2; i < marks.Length; i++)
+            {
+                if (!marks[i])
+                    primes.Add(i);
+            }
+            return primes.ToArray();
+        }
 
         public static int[] PrimeSieve(int n)
         {
