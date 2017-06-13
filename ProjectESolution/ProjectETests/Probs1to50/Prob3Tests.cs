@@ -14,17 +14,21 @@ namespace ProjectETests.Probs1to50
     public class Prob3Tests
     {
         [Test]
-        public void TestPrimeSieve()
+        public void TestPrimeSieveLargeN()
         {
-            //var primes = Prob3.PrimeSieve(1000);
-            //util.WriteOut(primes.ShowBoundaries(3));
-
-            var primes2 = Prob3.SimpleSieve(700000);
+            var primes2 = Prob3.SimpleSieve(50000);
             TestUtils.WriteOut(primes2.ShowBoundaries(3));
            
-            //string vals = String.Join(",", primes);
-            //Utilities.TestUtils.WriteOut(vals);
             Assert.IsTrue(primes2.Length > 0);
+        }
+
+        [Test]
+        public void TestPrimeSieveFirst100()
+        {
+            var primes = Prob3.SimpleSieve(100);
+            TestUtils.WriteOut(primes.ShowBoundaries(3));
+            
+            Assert.IsTrue(primes.Length == 25);
         }
 
        
@@ -34,6 +38,8 @@ namespace ProjectETests.Probs1to50
         {
             long num = 600851475143;
             var result = Prob3.MaxPrimeFactor(num);
+            TestUtils.WriteOut($"Max prime factor of {num} is {result}");
+            //6857
         }
     }
 }

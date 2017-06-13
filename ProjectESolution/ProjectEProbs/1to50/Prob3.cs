@@ -24,19 +24,30 @@ namespace ProjectEProbs._1to50
             //largest possible prime factor is sqrt(n)
             double d = Convert.ToDouble(n);
             double sr = Math.Ceiling(Math.Sqrt(d));
-            int startval = Convert.ToInt32(sr);
+            long maxpossible = Convert.ToInt64(sr);
             //775,147
+            long[] sieve = SimpleSieve(maxpossible);
+            long solution = 1;
+            for (var idx = sieve.Length - 1; idx >= 1; idx--)
+            {
+                var prime = sieve[idx];
+                if (n % prime == 0)
+                {
+                    solution = prime;
+                    break;
+                }
+            }
 
             // how to bridge gap between sqrt of big number
             // and precached list of known primes?
 
 
 
-            return -1;
+            return solution;
         }
 
         
-        public static long[] SimpleSieve(int max)
+        public static long[] SimpleSieve(long max)
         {
             bool[] marks = new bool[max];
             for(long p = 2; p < max; p++)
