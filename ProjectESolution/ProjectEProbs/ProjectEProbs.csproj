@@ -44,6 +44,8 @@
     <Compile Include="1to50\Prob1.cs" />
     <Compile Include="1to50\Prob3.cs" />
     <Compile Include="1to50\Prob4.cs" />
+    <Compile Include="1to50\Prob5.cs" />
+    <Compile Include="OptimusPrime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
