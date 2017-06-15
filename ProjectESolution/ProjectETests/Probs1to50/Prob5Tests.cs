@@ -26,9 +26,9 @@ namespace ProjectETests.Probs1to50
         [Test]
         public void TestMinMultiple20()
         {
-            //int answer = Prob5.MinMultipleOfRange(1, 20);
-            //TestUtils.WriteOut($"Min multiple of 1-20 is {answer}.");
-            //Assert.IsTrue(answer > 0);
+            int answer = Prob5.LCMOfRange(1, 20);
+            TestUtils.WriteOut($"Min multiple of 1-20 is {answer}.");
+            Assert.IsTrue(answer > 0);
         }
 
         [Test]
