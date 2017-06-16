@@ -52,5 +52,10 @@ namespace ProjectEProbs
             return Convert.ToInt64(val);
         }
 
+        public static long Pow(this long x, int y)
+        {
+            double val = Math.Pow((double)x, (double)y);
+            return Convert.ToInt64(val);
+        }
     }
 }
