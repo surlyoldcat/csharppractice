@@ -129,7 +129,12 @@ namespace ProjectEProbs
             return solution;
         }
         
-        private static long[] Sieve(long max)
+        public static long[] SegmentedSieve(long max)
+        {
+
+        }
+
+        public static long[] Sieve(long max)
         {
             bool[] marks = new bool[max];
             for(long p = 2; p < max; p++)

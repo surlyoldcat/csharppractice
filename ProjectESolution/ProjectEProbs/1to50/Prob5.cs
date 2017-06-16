@@ -33,53 +33,52 @@ namespace ProjectEProbs._1to50
         {
             int[] numbers = Enumerable.Range(lo, hi - lo + 1).ToArray();
             long[] primes = OP.Primes(hi).ToArray();
-            List<int> nonrepeatedFactors = new List<int>(numbers.Length);
-            Dictionary<int, int> repeatedFactors = new Dictionary<int, int>(numbers.Length);
+            Dictionary<int, int> factorsWithCounts = new Dictionary<int, int>(numbers.Length);
             //TODO nonrepeatedFactors can be replaced by a running product (just use division instead of List.Remove())
             foreach(int num in numbers)
             {
                 //TODO THIS IS DAMN UGLY!!!
                 // REPLACE with single dictionary with counts. the 2-list thing is stupid
+                /*
+                single dict, for each N do a simple key check for count=1, 
+
+                */
                 Dictionary<int, int> factors = OP.FactorToPrimes(num, primes).GroupBy(p => p).ToDictionary(k => (int)k.Key, v => v.Count());
+                foreach(var i in factors)
+                {
+                    int factor = i.Key;
+                    int count = i.Value;
+                    if (factorsWithCounts.ContainsKey(factor))
+                    {
+                        if (count > factorsWithCounts[factor])
+                            factorsWithCounts[factor] = count;           
+                    }
+                    else
+                    {
+                        factorsWithCounts.Add(factor, count);
+                    }
+                }
 #if verbose
                 string foo = String.Format("Prime factor counts for {0}: {1}", num, String.Join(",", factors.Select(o => $"{o.Key} ({o.Value})")));                
                 System.Diagnostics.Debug.WriteLine(foo);
 #endif
-                foreach (var kvp in factors)
-                {
-                    int factor = kvp.Key;
-                    int count = kvp.Value;
-                    if (count > 1)
-                    {
-                        if ((repeatedFactors.ContainsKey(factor) && count > repeatedFactors[factor])
-                            || !repeatedFactors.ContainsKey(factor))
-                        {                            
-                            repeatedFactors[factor] = count;
-                        }                                              
-                    }
-                    else
-                    {
-                        if (!nonrepeatedFactors.Contains(factor))
-                            nonrepeatedFactors.Add(factor);
-                    }                    
-                }
                 
             }
+
 #if verbose
-            string nons = String.Format("Non-repeated factors: {0}", String.Join(",", nonrepeatedFactors));
-            System.Diagnostics.Debug.WriteLine(nons);
-            string reps = String.Format("Repeated factors: {0}", String.Join(",", repeatedFactors.Select(o => $"{o.Key} ({o.Value})")));
-            System.Diagnostics.Debug.WriteLine(reps);
-            
+            string allFactorsDebug = Utilities.StringifyDict<int, int>(factorsWithCounts, "factorsWithCounts");
+            System.Diagnostics.Debug.WriteLine(allFactorsDebug);
 #endif
-            int lcm = nonrepeatedFactors.Aggregate(1, (acc, p) => acc * p);
-            foreach(var kvp in repeatedFactors)
+            int lcm = 1;
+            foreach(var kvp in factorsWithCounts)
             {
-                lcm *= kvp.Key * kvp.Value;
+                lcm *= (int)kvp.Key.RaisePower(kvp.Value);
             }
 
             return lcm;
         }
+
+        
 
         private static bool TestMultiple(int n, int[] factors)
         {

@@ -28,7 +28,7 @@ namespace ProjectETests.Probs1to50
         {
             int answer = Prob5.LCMOfRange(1, 20);
             TestUtils.WriteOut($"Min multiple of 1-20 is {answer}.");
-            Assert.IsTrue(answer > 0);
+            Assert.IsTrue(answer == 232792560);
         }
 
         [Test]
