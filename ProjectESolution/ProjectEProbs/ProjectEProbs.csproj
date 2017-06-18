@@ -47,6 +47,8 @@
     <Compile Include="1to50\Prob5.cs" />
     <Compile Include="1to50\Prob7.cs" />
     <Compile Include="1to50\Prob6.cs" />
+    <Compile Include="1to50\Prob8.cs" />
+    <Compile Include="1to50\Prob9.cs" />
     <Compile Include="OptimusPrime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />

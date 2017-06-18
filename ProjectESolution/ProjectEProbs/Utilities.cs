@@ -27,6 +27,28 @@ namespace ProjectEProbs
             return sb.ToString();
         }
 
+        public static bool IsSquare(long n)
+        {
+            double root = Math.Sqrt((double)n);
+            return root % 1 == 0;  //apparently you can use mod on doubles...
+            
+        }
+        public static Dictionary<int, long> GetSquares(int start, int end)
+        {
+
+            Dictionary<int, long> squares = new Dictionary<int, long>(end - start + 1);
+            for(int i = start; i <= end; i++)
+            {
+                squares.Add(i, i.Pow(2));
+            }
+            return squares;
+        }
+
+        public static string RemoveWhitespace(this string s)
+        {
+            return new string(s.ToCharArray().Where(c => !char.IsWhiteSpace(c)).ToArray());
+        }
+
         public static int FirstMultipleAbove(int n, int min)
         {
             for (int x = min; x < int.MaxValue; x++)

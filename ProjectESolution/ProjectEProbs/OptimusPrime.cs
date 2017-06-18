@@ -9,7 +9,54 @@ namespace ProjectEProbs
 {
     public static class OptimusPrime
     {
-        private static long SIEVE_SQUAREROOT_THRESHOLD_N = 10001;
+        
+        const int NULL_IDX = int.MinValue;
+        const long SIEVE_SQUAREROOT_THRESHOLD_N = 10001;
+
+        public static IEnumerable<long> RangeSieve(int startValue, int size, IEnumerable<long> provenPrimes)
+        {
+            //TODO move this into OptimusPrime
+            BitArray nonPrimes = new BitArray(size, false);
+            Func<int, int> ValForIdx = (idx) => { return startValue + idx; };
+            Func<int, int> IdxForVal = (val) =>
+            {
+                int retval = val - startValue;
+                if (retval < 0 || retval >= nonPrimes.Length)
+                {
+                    retval = NULL_IDX;
+                }
+                return retval;
+            };
+            Func<int, int> FindStartIdx = (p) =>
+            {
+                int s = (int)p.Pow(2);
+                if (s < startValue)
+                    s = Utilities.FirstMultipleAbove(p, startValue);
+                return IdxForVal(s);                
+            };
+
+            foreach(int p in provenPrimes)
+            {
+                int startIndex = FindStartIdx(p);
+                if (startIndex == NULL_IDX)
+                    continue;
+                
+                for(int a = startIndex; a < nonPrimes.Length; a += p)
+                {
+                    nonPrimes[a] = true;
+                }
+            }
+            for(int idx = 0; idx < nonPrimes.Length; idx++)
+            {
+                if (!nonPrimes[idx])
+                {
+                    yield return ValForIdx(idx);
+                }
+            }
+            
+
+        }
+
 
         public static long[] FactorToPrimes(long n)
         {
