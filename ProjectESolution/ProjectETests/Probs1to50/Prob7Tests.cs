@@ -28,7 +28,7 @@ namespace ProjectETests.Probs1to50
             int n = 10001;
             long result = Prob7.GetNthPrime(n);
             Assert.IsTrue(result > 1);
-            //Assert.AreEqual(25164150, result);
+            Assert.AreEqual(104743, result);
             TestUtils.WriteOut($"10,001st prime is {result}.");
         }}
 }

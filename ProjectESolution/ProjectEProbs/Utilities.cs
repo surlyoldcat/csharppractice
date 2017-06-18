@@ -27,6 +27,16 @@ namespace ProjectEProbs
             return sb.ToString();
         }
 
+        public static int FirstMultipleAbove(int n, int min)
+        {
+            for (int x = min; x < int.MaxValue; x++)
+            {
+                if (x % n == 0)
+                    return x;
+            }
+            return 0;
+        }
+
         public static int IntegralSquareRoot(int n)
         {
             double d = Convert.ToDouble(n);

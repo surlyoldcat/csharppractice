@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace ProjectEProbs
 {
     public static class OptimusPrime
     {
-        private static long SIEVE_SQUAREROOT_THRESHOLD_N = 1001;
+        private static long SIEVE_SQUAREROOT_THRESHOLD_N = 10001;
 
         public static long[] FactorToPrimes(long n)
         {
@@ -82,7 +83,7 @@ namespace ProjectEProbs
                 yield return 0;
             else if (max == 1)
                 yield return 1;
-
+            
             bool[] marks = new bool[max];
             for (long p = 2; p < max; p++)
             {
