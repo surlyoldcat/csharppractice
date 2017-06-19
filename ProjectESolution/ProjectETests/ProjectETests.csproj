@@ -42,6 +42,7 @@
     <Compile Include="Probs1to50\Prob3Tests.cs" />
     <Compile Include="Probs1to50\Prob4Tests.cs" />
     <Compile Include="Probs1to50\Prob5Tests.cs" />
+    <Compile Include="Probs1to50\Prob10Tests.cs" />
     <Compile Include="Probs1to50\Prob9Tests.cs" />
     <Compile Include="Probs1to50\Prob8Tests.cs" />
     <Compile Include="Probs1to50\Prob7Tests.cs" />
