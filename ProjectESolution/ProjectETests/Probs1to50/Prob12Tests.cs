@@ -26,7 +26,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjectEProbs._1to50;
 using ProjectETests.Utilities;
-using System.Numerics;
 
 namespace ProjectETests.Probs1to50
 {
@@ -38,7 +37,7 @@ namespace ProjectETests.Probs1to50
         public void TestTriangleGen()
         {
             long[] correct = { 1, 3, 6, 10, 15, 21, 28, 36 };
-            long[] generated = Prob12.TriangleNumberGenerator(1000).Take(8).ToArray();
+            long[] generated = Prob12.TriangleNumberGenerator(0, 1000).Take(8).ToArray();
             for (int i = 0; i < correct.Length;i++)
             {
                 Assert.AreEqual(correct[i], generated[i]);
@@ -49,16 +48,16 @@ namespace ProjectETests.Probs1to50
         [Test]
         public void TestTriangleNumWith5Div()
         {
-            BigInteger solution = Prob12.Solve(5);
+            var solution = Prob12.Solve(5);
             Assert.AreEqual(28, solution);
         }
 
         [Test]
         public void TestTriangleNumWith500Div()
         {
-            BigInteger solution = Prob12.Solve(500);
+            var solution = Prob12.Solve(500);
             TestUtils.WriteOut($"First triangle number with at least 500 divisors is {solution}.");
-            Assert.AreEqual(28, solution);
+            Assert.AreEqual(76576500, solution);
         }
     }
 }

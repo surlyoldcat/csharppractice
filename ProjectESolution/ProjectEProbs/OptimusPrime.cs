@@ -124,26 +124,27 @@ namespace ProjectEProbs
             
         }
 
+        
         public static IEnumerable<long> Primes(long max)
         {
             if (max == 0)
                 yield return 0;
             else if (max == 1)
                 yield return 1;
-            
-            bool[] marks = new bool[max];
-            for (long p = 2; p < max; p++)
+
+            LongBitArray marks = new LongBitArray(max);
+            for(long p = 2; p < max; p++)
             {
                 if (!marks[p])
                 {
-                    for (long q = p * p; q < max; q += p)
+                    for(long q = p * p; q < max; q += p)
                     {
-                        if (!marks[q])
-                            marks[q] = true;
+                        marks[q] = true;
                     }
                 }
             }
-            for (long i = 2; i < marks.Length; i++)
+
+            for (int i = 2; i < marks.Length; i++)
             {
                 if (!marks[i])
                     yield return i;

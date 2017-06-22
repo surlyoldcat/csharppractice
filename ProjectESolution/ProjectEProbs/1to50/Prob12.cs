@@ -22,7 +22,6 @@ What is the value of the first triangle number to have over five hundred divisor
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,61 +29,60 @@ namespace ProjectEProbs._1to50
 {
     public static class Prob12
     {
-        public static BigInteger Solve(int minDivisors)
+        public static long Solve(int minDivisors)
         {
             // for help: the formula for a Triangular Number is x_n = n(n+1)/2
             // https://www.mathsisfun.com/algebra/triangular-numbers.html
 
-            //and from wikipedia:
+
             //http://www.mathblog.dk/triangle-number-with-more-than-500-divisors/
-    
-            var r = Enumerable.Range(1, minDivisors).Select<int, long>(i => i);
-    
-            BigInteger minProduct = BigProduct(r);
-            BigInteger minTriangle = BigTriangleNumbers(0).First(b => b >= minProduct);
-
-
-            foreach(var tri in BigTriangleNumbers(minTriangle))
+            var provenPrimes = OptimusPrime.Primes(500000).ToArray();
+            long max = (long) Int32.MaxValue + 100;
+            var triangles = TriangleNumberGenerator(0, max);
+            foreach(long tri in triangles)
             {
-                if (HasAtLeastNDivisors(tri, minDivisors))
+                int divisors = FactorizationNumDivisors(tri, provenPrimes);
+                if (divisors > minDivisors)
                     return tri;
             }
+
             return 0;
         }
 
-        public static BigInteger BigProduct(IEnumerable<long> factors)
+        private static int FactorizationNumDivisors(long n, long[] primes)
         {
-            BigInteger p = 1;
-            foreach(long i in factors)
+            //perform prime factorization and return number of divisors
+            int numDivisors = 1;            
+            long remainder = n;
+
+            for (int i = 0; i < primes.Length; i++)
             {
-                p *= i;
-            }
-            return p;
-        }
-        public static bool HasAtLeastNDivisors(BigInteger n, int minDivisors)
-        {
-            int divisorCount = 0;
-            for (BigInteger a = 1; a <= n/2; a++)
-            {
-                if (n % a == 0)
+                long prime = primes[i];
+                // In case there is a remainder this is a prime factor as well 
+                // The exponent of that factor is 1 
+                if (prime.Pow(2) > n)
                 {
-                    if (++divisorCount >= minDivisors)
-                        return true;
+                    return numDivisors * 2;
+                }
+
+                //get exponents of facts by dividing down
+                int exp = 1;
+                while (remainder % prime == 0)
+                {
+                    exp++;
+                    remainder = remainder / prime;
+                }
+                numDivisors *= exp;
+
+                //If there is no remainder, return the count
+                if (remainder == 1)
+                {
+                    return numDivisors;
                 }
             }
-            return false;
+            return numDivisors;
         }
         
-        public static IEnumerable<BigInteger> BigTriangleNumbers(BigInteger seed)
-        {
-            BigInteger t = seed;
-            BigInteger n = 0;
-            while(true)
-            {
-                t += ++n;
-                yield return t;
-            }
-        }
 
         public static IEnumerable<long> TriangleNumberGenerator(long seed = 0, long max = long.MaxValue)
         {
