@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +43,7 @@
   <ItemGroup>
     <Compile Include="1to50\Prob10.cs" />
     <Compile Include="1to50\Prob11.cs" />
+    <Compile Include="1to50\Prob12.cs" />
     <Compile Include="1to50\Prob2.cs" />
     <Compile Include="1to50\Prob1.cs" />
     <Compile Include="1to50\Prob3.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="1to50\Prob8.cs" />
     <Compile Include="1to50\Prob9.cs" />
     <Compile Include="OptimusPrime.cs" />
+    <Compile Include="OptimusPrimeInt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>

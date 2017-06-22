@@ -19,6 +19,16 @@ namespace ProjectEProbs
             return sb.ToString();
         }
 
+        public static IEnumerable<int> GenerateSequence(int start, int count, int step)
+        {
+            for(int i = 0; i < count; i++)
+            {
+                yield return start + i * step;
+            }
+        }
+
+        
+        
         public static string StringifyList<T>(List<T> list, string delim = ",", string name="")
         {
             string displayName = String.IsNullOrEmpty(name) ? "List" : name;

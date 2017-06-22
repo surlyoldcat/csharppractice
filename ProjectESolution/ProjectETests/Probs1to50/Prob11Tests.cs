@@ -47,10 +47,9 @@ namespace ProjectETests.Probs1to50
         [Test]
         public void TestGreatest4FactorProduct()
         {
-            int n = 0;
             long solution = Prob11.Solve();
-
-            Assert.AreEqual(0, solution);
+            
+            Assert.AreEqual(70600674, solution);
             TestUtils.WriteOut($"Greatest 4-digit product is: {solution}");
             
         }

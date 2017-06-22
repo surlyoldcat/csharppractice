@@ -90,47 +90,137 @@ namespace ProjectEProbs._1to50
             //in the grid array; since we know the dimensions of the
             // grid (20x20) we can just use index math to naviagate, 
             //instead of using a multi-D array
-            long maxProduct = 0;
-            for (int i=0;i < Grid.Length;i++)
-            {
-                // get quads from here (max of 4)
-                // calc max quad prod
-                // is max quad prod > maxProduct?
-                //respect the bounds- skip if i is within 4 of NumCols,
-                //or j is within 4 of NumRows  (put Asserts in the quadruplet
-                //code to verify we're not wrapping around indexes)
-            }
-            return maxProduct;
+            
+            
+            var downs = IndicesForDown();
+            var maxFromDowns = downs.Select(d => DownProduct(d)).Max();
+
+            var acrosses = IndicesForAcross();
+            var maxFromAcross = acrosses.Select(a => AcrossProduct(a)).Max();
+
+            var downrights = IndicesForDownRight();
+            var maxFromDownRight = downrights.Select(dr => DownRightProduct(dr)).Max();
+
+            var downlefts = IndicesForDownLeft();
+            var maxFromDownLeft = downlefts.Select(dl => DownLeftProduct(dl)).Max();
+
+            long[] maxes = { maxFromAcross, maxFromDowns, maxFromDownLeft, maxFromDownRight };
+
+            return maxes.Max();
         }
 
-        private static Quadruplet Across(int idx, int rowEndIdx)
+        private static IEnumerable<int> IndicesForDown()
         {
-            //iterate by 1s
-            byte[] nums = { 0, 0, 0, 0 };
-            if (idx <= rowEndIdx - 3)   //to prevent wrapping
+            //last index for downs should be 319
+            for (int i = 0; i < NumCols; i++)
             {
-                for (int a = 0; a < 4; a++)
+                var indices = Utilities.GenerateSequence(i, 16, 20);
+                var x = indices.First();
+                var y = indices.Last();
+                foreach (int index in indices)
                 {
-                    nums[a] = Grid[idx + a];
-
+                    Debug.Assert(index < Grid.Length);
+                    yield return index;
                 }
             }
-            return new Quadruplet(nums);
+        
         }
 
-        private static Quadruplet Down(int idx)
+        private static long AcrossProduct(int index)
         {
-            //iterate by 20s (NumCols)
+            //iterate by 1's
+            long[] vals = { 0, 0, 0, 0 };
+            for (int a = 0; a < 4; a++)
+            {
+                int b = index + a;
+                vals[a] = (long)Grid[b];
+            }
+            long product = vals.Aggregate(1, (long acc, long i) => acc * i);
+            return product;
         }
 
-        private static Quadruplet DownRight(int idx)
+        private static long DownProduct(int index)
         {
-            //iterate by 21s
+            //iterate by 20's
+            //0, 20, 40... 1, 21, 41, 61.... 7, 27, 47, ....
+            long[] vals = { 0, 0, 0, 0 };
+            for (int a = 0; a < 4; a++)
+            {
+                int b = index + 20 * a;
+                vals[a] = (long)Grid[b];
+            }
+            long product = vals.Aggregate(1, (long acc, long i) => acc * i);
+            return product;
         }
 
-        private static Quadruplet DownLeft(int idx)
+        private static long DownRightProduct(int index)
         {
-            //iterate by 19s, watch the left boundary
+            //iterate by 21's
+            long[] vals = { 0, 0, 0, 0 };
+            for (int a = 0; a < 4; a++)
+            {
+                int b = index + 21 * a;
+                vals[a] = (long)Grid[b];
+            }
+            long product = vals.Aggregate(1, (long acc, long i) => acc * i);
+            return product;
+        }
+
+        private static long DownLeftProduct(int index)
+        {
+            //iterate by 19's
+            long[] vals = { 0, 0, 0, 0 };
+            for (int a = 0; a < 4; a++)
+            {
+                int b = index + 19 * a;
+                vals[a] = (long)Grid[b];
+            }
+            long product = vals.Aggregate(1, (long acc, long i) => acc * i);
+            return product;
+        }
+        private static IEnumerable<int> IndicesForAcross()
+        {
+            for (int i = 0; i < NumRows; i++)
+            {
+                var indices = Enumerable.Range(i * NumCols, 17);
+                foreach (int index in indices)
+                {
+                    Debug.Assert(index < Grid.Length);
+                    yield return index;
+                }
+            }
+        }
+
+        private static IEnumerable<int> IndicesForDownRight()
+        {
+            //this is just the intersection of Down and Across indices
+            var a = IndicesForAcross();
+            var d = IndicesForDown();
+            var intersection = a.Intersect(d);
+            foreach (int index in intersection)
+            {
+                Debug.Assert(index < Grid.Length);
+                yield return index;
+            }
+
+        }
+       
+        private static IEnumerable<int> IndicesForDownLeft()
+        {
+            //intersection of Down indices and the grid without the first 4 columns
+            List<int> acrosses = new List<int>(320);
+            for (int i = 0; i < NumRows; i++)
+            {
+                acrosses.AddRange(Enumerable.Range(i * NumCols + 3, 17));
+            }
+            var downs = IndicesForDown();
+            var intersection = acrosses.Intersect(downs);
+            foreach (int index in intersection)
+            {
+                Debug.Assert(index < Grid.Length);
+                yield return index;
+            }
+
         }
 
         private class Quadruplet
