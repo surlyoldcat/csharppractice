@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,18 @@ namespace ProjectEProbs
                 sb.AppendLine($"[{item.Key}] = {item.Value}");
             }
             return sb.ToString();
+        }
+
+        public static void ReadFileLines(FileInfo file, Action<string> lineHandler)
+        {
+            using (StreamReader rdr = file.OpenText())
+            {
+                while (!rdr.EndOfStream)
+                {
+                    string line = rdr.ReadLine();
+                    lineHandler(line);
+                }
+            }
         }
 
         public static IEnumerable<int> GenerateSequence(int start, int count, int step)

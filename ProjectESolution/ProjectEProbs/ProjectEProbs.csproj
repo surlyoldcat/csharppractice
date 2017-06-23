@@ -47,6 +47,7 @@
     <Compile Include="1to50\Prob10.cs" />
     <Compile Include="1to50\Prob11.cs" />
     <Compile Include="1to50\Prob12.cs" />
+    <Compile Include="1to50\Prob13.cs" />
     <Compile Include="1to50\Prob2.cs" />
     <Compile Include="1to50\Prob1.cs" />
     <Compile Include="1to50\Prob3.cs" />
@@ -63,6 +64,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Prob13Data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
