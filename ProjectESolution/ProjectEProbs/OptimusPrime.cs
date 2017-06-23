@@ -15,8 +15,10 @@ namespace ProjectEProbs
 
         public static IEnumerable<long> RangeSieve(int startValue, int size, IEnumerable<long> provenPrimes)
         {
-            //TODO move this into OptimusPrime
+            // create our Sieve of Erastothenes 'sheet'
             BitArray nonPrimes = new BitArray(size, false);
+
+            // helper Funcs
             Func<int, int> ValForIdx = (idx) => { return startValue + idx; };
             Func<int, int> IdxForVal = (val) =>
             {
@@ -37,15 +39,21 @@ namespace ProjectEProbs
 
             foreach(int p in provenPrimes)
             {
+                // call helper func to get first multiple of p after p^2,
+                // that will be our starting point
                 int startIndex = FindStartIdx(p);
                 if (startIndex == NULL_IDX)
                     continue;
                 
+                // as with a normal sieve, go through the multiples
+                // and 'mark' numbers in the array
                 for(int a = startIndex; a < nonPrimes.Length; a += p)
                 {
                     nonPrimes[a] = true;
                 }
             }
+
+            //iterate & return non-marked numbers
             for(int idx = 0; idx < nonPrimes.Length; idx++)
             {
                 if (!nonPrimes[idx])
@@ -65,6 +73,9 @@ namespace ProjectEProbs
             Array.Reverse(primeArr);
             List<long> factors = new List<long>(primeArr.Length * 2);
 
+            // this version just starts with the highest prime < n
+            // and divides down. i think it could probably be done the other
+            // way, or at least more efficiently... revisit later
             long runningN = n;
             foreach (long prime in primeArr)
             {
@@ -101,6 +112,8 @@ namespace ProjectEProbs
 
         public static IEnumerable<long> PrimeFactors(long n)
         {
+            // TOOD get rid of this, combine some of the other prime factorization methods
+            // into something more efficient
             if (n <= 0)
                 throw new ArgumentOutOfRangeException("This function only works with non-zero positive integer values.");
 
@@ -127,11 +140,15 @@ namespace ProjectEProbs
         
         public static IEnumerable<long> Primes(long max)
         {
+            //just start enumerating prime numbers
             if (max == 0)
                 yield return 0;
             else if (max == 1)
                 yield return 1;
 
+            // note, LongBitArray is an invention- functionality (and low overhead)
+            // of BitArray, but it can handle 64-bit numbers (by using a collection
+            // of regular BitArrays)
             LongBitArray marks = new LongBitArray(max);
             for(long p = 2; p < max; p++)
             {
@@ -154,6 +171,7 @@ namespace ProjectEProbs
 
         public static long MaxPrimeFactor(long n)
         {
+            //TODO refactor into one of the existing prime factorization methods
             //600,851,475,143 is official test n
             if (n == 0)
                 return 0;

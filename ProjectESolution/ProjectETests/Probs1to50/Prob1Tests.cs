@@ -40,13 +40,6 @@ namespace ProjectETests.Probs1to50
             Assert.IsTrue(answer == 233168);
         }
 
-        [Test]
-        public void TestLargeN()
-        {
-            int n = int.MaxValue - 1;
-            int answer = Prob1.SumMultiplesOf3and5(n);
-            TestUtils.WriteOut(n, answer);
-            Assert.IsTrue(answer == 1360072980);
-        }
+     
     }
 }

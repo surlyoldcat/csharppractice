@@ -20,12 +20,7 @@ namespace ProjectEProbs._1to50
             else if (n < 5)
                 return 3;
 
-            int sum = 0;
-            for (var a = 1; a < n; a++)
-            {
-                if (a % 3 == 0 || a % 5 == 0)
-                    sum += a;
-            }
+            int sum = Enumerable.Range(1, n - 1).Where(a => a % 3 == 0 || a % 5 == 0).Sum();
             return sum;
         }
 
@@ -36,12 +31,7 @@ namespace ProjectEProbs._1to50
             else if (n < 5)
                 return new int[] { 3 };
 
-            List<int> multiples = new List<int>(n);
-            for (var a = 1; a < n; a++)
-            {
-                if (a % 3 == 0 || a % 5 == 0)
-                    multiples.Add(a);
-            }
+            var multiples = Enumerable.Range(1, n - 1).Where(a => a % 3 == 0 || a % 5 == 0);
             return multiples.ToArray();
         }
 
