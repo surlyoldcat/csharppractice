@@ -20,6 +20,7 @@ namespace ProjectEProbs
             return sb.ToString();
         }
 
+        
         public static void ReadFileLines(FileInfo file, Action<string> lineHandler)
         {
             using (StreamReader rdr = file.OpenText())

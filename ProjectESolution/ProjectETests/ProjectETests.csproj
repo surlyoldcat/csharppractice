@@ -38,8 +38,10 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Probs1to50\Prob15Tests.cs" />
     <Compile Include="Probs1to50\Prob11Tests.cs" />
     <Compile Include="Probs1to50\Prob12Tests.cs" />
+    <Compile Include="Probs1to50\Prob14Tests.cs" />
     <Compile Include="Probs1to50\Prob13Tests.cs" />
     <Compile Include="Probs1to50\Prob1Tests.cs" />
     <Compile Include="Probs1to50\Prob2Tests.cs" />
