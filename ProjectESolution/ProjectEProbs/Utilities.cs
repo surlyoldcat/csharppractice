@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -97,10 +98,10 @@ namespace ProjectEProbs
             return Convert.ToInt64(root);
         }
 
-        public static long RaisePower(this int i, int exponent)
-        {
-            return Enumerable.Repeat(i, exponent).Aggregate(1, (x, y) => x * y);
-        }
+        //public static long RaisePower(this int i, int exponent)
+        //{
+        //    return Enumerable.Repeat(i, exponent).Aggregate(1, (x, y) => x * y);
+        //}
 
         public static long Pow(this int x, int y)
         {
@@ -113,5 +114,7 @@ namespace ProjectEProbs
             double val = Math.Pow((double)x, (double)y);
             return Convert.ToInt64(val);
         }
+
+        
     }
 }

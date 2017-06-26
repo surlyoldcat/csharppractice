@@ -16,6 +16,7 @@ using NUnit.Framework;
 using ProjectEProbs;
 using ProjectEProbs._1to50;
 using ProjectETests.Utilities;
+using System.Numerics;
 
 namespace ProjectETests.Probs1to50
 {
@@ -24,27 +25,42 @@ namespace ProjectETests.Probs1to50
     public class Prob15Tests
     {
         [Test]
-        public void TestGridSize4()
+        public void TestSmallGrid()
         {
-            int result = Prob15.CountPathsThruGrid(4);
+            var result = Prob15.CountPathsThruGridToPoint(2,2);
             Assert.AreEqual(6, result);
             
         }
 
         [Test]
-        public void TestGridSize8()
+        public void TestMediumGrid()
         {
-            int result = Prob15.CountPathsThruGrid(8);
-            Assert.AreEqual(6, result);
+            var result = Prob15.CountPathsThruGridToPoint(8, 8);
+            Assert.AreEqual(12870, result);
             
         }
 
         [Test]
-        public void TestGridSize20()
+        public void TestLargeGrid()
         {
-            int result = Prob15.CountPathsThruGrid(20);
-            Assert.AreEqual(6, result);
+            var result = Prob15.CountPathsThruGridToPoint(20, 20);
+            Assert.AreEqual(137846528820, result);
             
+        }
+
+        [Test]
+        public void TestFactorial()
+        {
+            var result = Prob15.Factorial(5);
+            Assert.AreEqual(120, result);
+
+            result = Prob15.Factorial(6);
+            Assert.AreEqual(720, result);
+
+            result = Prob15.Factorial(10);
+            Assert.AreEqual(3628800, result);
+
+
         }
     }
         

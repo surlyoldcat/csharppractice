@@ -72,7 +72,7 @@ namespace ProjectEProbs._1to50
             int lcm = 1;
             foreach(var kvp in factorsWithCounts)
             {
-                lcm *= (int)kvp.Key.RaisePower(kvp.Value);
+                lcm *= (int)kvp.Key.Pow(kvp.Value);
             }
 
             return lcm;

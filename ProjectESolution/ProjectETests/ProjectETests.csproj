@@ -38,6 +38,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Probs1to50\Prob16Tests.cs" />
     <Compile Include="Probs1to50\Prob15Tests.cs" />
     <Compile Include="Probs1to50\Prob11Tests.cs" />
     <Compile Include="Probs1to50\Prob12Tests.cs" />
