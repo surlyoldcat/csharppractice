@@ -51,6 +51,7 @@
     <Compile Include="1to50\Prob14.cs" />
     <Compile Include="1to50\Prob15.cs" />
     <Compile Include="1to50\Prob16.cs" />
+    <Compile Include="1to50\Prob17.cs" />
     <Compile Include="1to50\Prob2.cs" />
     <Compile Include="1to50\Prob1.cs" />
     <Compile Include="1to50\Prob3.cs" />
