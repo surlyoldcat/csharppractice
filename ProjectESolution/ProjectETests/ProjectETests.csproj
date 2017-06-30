@@ -48,6 +48,7 @@
     <Compile Include="Probs1to50\Prob14Tests.cs" />
     <Compile Include="Probs1to50\Prob13Tests.cs" />
     <Compile Include="Probs1to50\Prob17Tests.cs" />
+    <Compile Include="Probs1to50\Prob18Tests.cs" />
     <Compile Include="Probs1to50\Prob1Tests.cs" />
     <Compile Include="Probs1to50\Prob2Tests.cs" />
     <Compile Include="Probs1to50\Prob3Tests.cs" />
@@ -72,6 +73,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Prob13Data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Prob18Data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
