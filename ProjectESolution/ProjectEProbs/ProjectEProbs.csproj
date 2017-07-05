@@ -55,6 +55,7 @@
     <Compile Include="1to50\Prob18.cs" />
     <Compile Include="1to50\Prob2.cs" />
     <Compile Include="1to50\Prob1.cs" />
+    <Compile Include="1to50\Prob20.cs" />
     <Compile Include="1to50\Prob3.cs" />
     <Compile Include="1to50\Prob4.cs" />
     <Compile Include="1to50\Prob5.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="1to50\Prob6.cs" />
     <Compile Include="1to50\Prob8.cs" />
     <Compile Include="1to50\Prob9.cs" />
+    <Compile Include="FactoriaBorealis.cs" />
     <Compile Include="LongBitArray.cs" />
     <Compile Include="OptimusPrime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
