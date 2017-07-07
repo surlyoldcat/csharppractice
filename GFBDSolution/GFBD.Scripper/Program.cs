@@ -10,6 +10,12 @@ namespace GFBD.Scripper
     {
         static void Main(string[] args)
         {
+            //TODO should probably prompt for an input string
+            Console.WriteLine("Running ObjectScripper test cases.");
+            var tests = new ScripperTests();
+            tests.TestAllTheThings();
+            Console.WriteLine("Done. Hit any key to exit.");
+            Console.ReadKey();
         }
     }
 }

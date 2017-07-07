@@ -7,20 +7,30 @@ using System.Threading.Tasks;
 namespace GFBD.Scripper
 {
     
-
-    public class ObjectScripper
+    /// <summary>
+    /// Takes an object of unknown type and renders it 
+    /// to a string of a particulr format (HTML or Javascript)
+    /// </summary>
+    /// <remarks>This should work with simple/scalar types, lists, arrays, and dictionaries,
+    /// and nesting is allowed.</remarks>
+    public static class ObjectScripper
     {
-        public ObjectScripper(object obj)
-        {
-            /*
-            1. get base type (simple/scalar or collection (or composite?))
-            2. build up a hierarchy of Thingys that matches the object's structure
-            3. recursively populate the hierarchy- it stops when it reaches
-                    a simple type;
-            4. call Render on the 'root.' this should trigger a recursive Render all the way down.
-            */
+        /// <summary>
+        /// Entry point for the object-to-string rendering process
+        /// </summary>
+        /// <param name="obj">object we want to see as a string</param>
+        /// <param name="format">the format to render</param>
+        /// <returns>string representation of the object, in the specified format</returns>
+        public static string RenderObject(object obj, OutputFormat format)
+        {            
+            IRenderer renderer = RendererFactory.GetRenderer(obj);
+            string result = renderer.Render(format);
+            return result;
         }
 
-       
+      
+        
+
+        
     }
 }
