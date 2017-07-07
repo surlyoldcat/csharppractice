@@ -2,20 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace GFBD.Scripper
 {
+    /// <summary>
+    /// A bunch of pseudo-unit tests to validate
+    /// different test cases for ObjectScripper
+    /// </summary>
     internal class ScripperTests
     {
-        public object JavascriptParser { get; private set; }
-
-        public void TestAllTheThings()
+        /// <summary>
+        /// Main method for running all the tests.
+        /// This method will execute every method
+        /// that has a name starting with "Test".
+        /// </summary>
+        public void RunTests()
         {
-            TestJS_Simple();
-            TestJS_PlainArray();
-            TestJS_PlainDict();
-            TestJS_NestedArray();
-            TestJS_MultiplyNestedDict();
+            
+            Type myType = this.GetType();
+            foreach(var m in myType.GetMethods())
+            {
+                string methodName = m.Name;
+                if (methodName.StartsWith("Test"))
+                {
+                    m.Invoke(this, null);
+                }
+            }
         }
 
         public void TestJS_Simple()
@@ -42,7 +55,6 @@ namespace GFBD.Scripper
             if (js != expected)
                 throw new ApplicationException($"Test failed! Expected: {expected} Actual:{js}");
 
-            Console.WriteLine(js);
             ValidateJavascript(js);
             Console.WriteLine("Pass.");
         }
@@ -59,7 +71,6 @@ namespace GFBD.Scripper
             };
             object o = (object)dict;
             string js = ObjectScripper.RenderObject(o, OutputFormat.Javascript);
-            Console.WriteLine(js);
             ValidateJavascript(js);
 
             string expected = "{\"a\":\"1\",\"b\":\"2\",\"c\":\"3\",\"foobyboo\":\"1234\"}";
@@ -78,12 +89,9 @@ namespace GFBD.Scripper
             things[2] = new int[3] { 10, 20, 30 };
             things[3] = new List<string> { "help", "me", "mommy" };
             object o = (object)things;
-
-
+            
             string js = ObjectScripper.RenderObject(o, OutputFormat.Javascript);
-            Console.WriteLine(js);
             ValidateJavascript(js);
-
             Console.WriteLine("Pass.");
         }
 
@@ -121,25 +129,144 @@ namespace GFBD.Scripper
                 {"ugly", new List<int> {2, 4, 6, 8, 10, 12} }
             };
 
-            Dictionary<int, object> outerDict = new Dictionary<int, object>();
-            outerDict.Add(1, "Fortinbras");
-            outerDict.Add(4, arrayOfDicts);
-            outerDict.Add(17, dictOfLists);
-
+            Dictionary<int, object> outerDict = new Dictionary<int, object>
+            {
+                { 1, "Fortinbras" },
+                { 4, arrayOfDicts },
+                { 17, dictOfLists }
+            };
             object o = (object)outerDict;
             string js = ObjectScripper.RenderObject(o, OutputFormat.Javascript);
-            Console.WriteLine(js);
-
-            Console.WriteLine("Attempting to validate with Newtonsoft.Json...");
             ValidateJavascript(js);
-      
-
             Console.WriteLine("Pass.");
             
         }
 
+        public void TestJS_CustomClass()
+        {
+            Console.WriteLine("Testing JS rendering of anonymous type...");
+            var monk = new
+            {
+                MonkeyName = "Micky",
+                NumFingers = 9,
+                FaveNumbers = new int[3] { 7, 19, 50 }
+            };
+            object o = (object)monk;
+            string js = ObjectScripper.RenderObject(o, OutputFormat.Javascript);
+            ValidateJavascript(js);
+            Console.WriteLine("Pass.");
+        }
+
+        public void TestJS_ListWithNulls()
+        {
+            Console.WriteLine("Testing JS rendering of a list with nulls.");
+            List<object> stuff = new List<object> { "this", null, "is", "not", null };
+            object o = (object)stuff;
+            string html = ObjectScripper.RenderObject(o, OutputFormat.Html);
+            ValidateHtml(html);
+            Console.WriteLine("Pass.");
+        }
+
+        public void TestJS_DictWithNulls()
+        {
+            Console.WriteLine("Testing JS rendering of a dict that involves some NULLage");
+            Dictionary<object, object> dict = new Dictionary<object, object>
+            {
+                {"paper", "maserati" },
+                {"plastic", null }
+            };
+            object o = (object)dict;
+            string js = ObjectScripper.RenderObject(o, OutputFormat.Javascript);
+            ValidateJavascript(js);
+            Console.WriteLine("Pass.");
+        }
+        public void TestHTML_ListOfStrings()
+        {
+            Console.WriteLine("Testing HTML rendering of a list of strings");
+            List<string> stuff = new List<string> { "here", "are", "some", "strings" };
+            object o = (object)stuff;
+            string html = ObjectScripper.RenderObject(o, OutputFormat.Html);
+            ValidateHtml(html);
+            Console.WriteLine("Pass.");
+        }
+
+        public void TestHTML_CustomClass()
+        {
+            Console.WriteLine("Testing HTML rendering of anonymous type.");
+            var puppy = new
+            {
+                Color = "brown",
+                Breed = "shepherd mix",
+                DOB = new DateTime(2014, 3, 10),
+                Name = "Buppo"
+            };
+            object o = (object)puppy;
+            string html = ObjectScripper.RenderObject(o, OutputFormat.Html);
+            ValidateHtml(html);
+            Console.WriteLine("Pass.");
+        }
+
+        public void TestHtml_ListWithNulls()
+        {
+            Console.WriteLine("Testing HTML rendering for an array with a null.");
+            object[] things = new object[4];
+            things[0] = "banana";
+            things[1] = new string[2] { "cranberry", "botox" };
+            things[3] = 1200;
+             object o = (object)things;
+            string html = ObjectScripper.RenderObject(o, OutputFormat.Html);
+            ValidateHtml(html);
+            Console.WriteLine("Pass.");
+            
+        }
+
+        public void TestHtml_MixedList()
+        {
+
+            object[] things = new object[4]
+            {
+                "Hamburg",
+                140,
+                new Dictionary<int, string>
+                {
+                    {2, "two" },
+                    {5, "five" },
+                    {117, "eleventy-seven" }
+                },
+                DateTime.Now
+            };
+             object o = (object)things;
+            string html = ObjectScripper.RenderObject(o, OutputFormat.Html);
+            ValidateHtml(html);
+            Console.WriteLine("Pass.");
+
+        }
+
+        private static void ValidateHtml(string html)
+        {
+            // validate the HTML by running it through an XML parser.
+            Console.WriteLine("HTML: " + html);
+            Console.WriteLine("Validating HTML using XML parser...");
+            string test = "<html>" + html + "</html>";
+            try
+            {
+                XElement.Parse(test);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("XML parser failed to parse generated HTML! " + ex.Message);
+            }
+            Console.WriteLine("The XML parser was able to parse the generated HTML.");
+            
+
+        }
+
         private static void ValidateJavascript(string js)
         {
+            // use the Newtonsoft library to try to parse the generated Javascript.
+            // it's not the perfect solution (Javascript != JSON) but it will do for now.
+            Console.WriteLine("Javascript: " + js);
             Console.WriteLine("Attempting to validate with Newtonsoft.Json...");
             string testJS = "{testing: " + js + "}";
             try

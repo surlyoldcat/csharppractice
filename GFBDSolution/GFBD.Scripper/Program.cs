@@ -10,10 +10,14 @@ namespace GFBD.Scripper
     {
         static void Main(string[] args)
         {
-            //TODO should probably prompt for an input string
+            //NOTE this only runs the tests found in ScripperTests.cs;
+            //putting in the ability to parse & compile C# entered
+            //from a command line prompt is non-trivial, and 
+            //ultimately not very useful (although it can be done...)
             Console.WriteLine("Running ObjectScripper test cases.");
-            var tests = new ScripperTests();
-            tests.TestAllTheThings();
+            var testRunner = new ScripperTests();
+            //the test runner just throws if it encounters errors
+            testRunner.RunTests();
             Console.WriteLine("Done. Hit any key to exit.");
             Console.ReadKey();
         }

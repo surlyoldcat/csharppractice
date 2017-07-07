@@ -35,6 +35,14 @@ namespace GFBD.Scripper
                 IEnumerable arr = (IEnumerable)obj;
                 return new EnumerableRenderer(arr);
             }
+            else if (typ.IsClass)
+            {
+                return new UnknownClassRenderer(obj);
+            }
+            else if (typ == typeof(DateTime))
+            {
+                return new DateTimeRenderer((DateTime)obj);
+            }
             else
             {
                 //big bad

@@ -29,7 +29,7 @@ namespace GFBD.Scripper
 
         public SimpleRenderer(object obj)
         {
-            Value = obj.ToString();
+            Value = obj?.ToString() ?? Constants.NULL_VALUE;
         }
 
         public string Render(OutputFormat format)
@@ -45,6 +45,58 @@ namespace GFBD.Scripper
             return @"""" + s + @"""";
         }
         
+    }
+
+    /// <summary>
+    /// Special IRenderer implementation to handle DateTimes.
+    /// Note, this renderer only renders the Date portion.
+    /// </summary>
+    internal class DateTimeRenderer : IRenderer
+    {
+        public DateTime Value { get; private set; }
+
+        public DateTimeRenderer(DateTime obj)
+        {
+            Value = obj;
+        }
+
+        public string Render(OutputFormat format)
+        {
+            //convert to string, then hand off to SimpleRenderer
+            string dateText = Value.ToLongDateString();
+            SimpleRenderer renderer = new SimpleRenderer(dateText);
+            return renderer.Render(format);
+        }
+    }
+
+    /// <summary>
+    /// Renders a class instance by extracting public
+    /// properties into a dictionary
+    /// </summary>
+    internal class UnknownClassRenderer : IRenderer
+    {
+        public object Value { get; private set; }
+
+        public UnknownClassRenderer(object obj)
+        {
+            Value = obj;
+        }
+
+        public string Render(OutputFormat format)
+        {
+            //rip the objects properties into a Dictionary,
+            //then just use the regular Dictionary renderer
+            Dictionary<string, object> members = new Dictionary<string, object>();
+            Type typ = Value.GetType();
+            foreach (var prop in typ.GetProperties())
+            {
+                string name = prop.Name;
+                object val = prop.GetValue(Value);
+                members.Add(name, val  ?? Constants.NULL_VALUE);
+            }
+            DictionaryRenderer renderer = new DictionaryRenderer(members);
+            return renderer.Render(format);
+        }
     }
 
     /// <summary>
@@ -66,10 +118,13 @@ namespace GFBD.Scripper
             //stitch them together for our pretty output
             List<string> renderedItems = new List<string>();
             foreach(var item in Values)
-            {
-                var itemRenderer = RendererFactory.GetRenderer(item);
+            {                
+                //get the right renderer for this list item
+                var itemRenderer = RendererFactory.GetRenderer(item ?? Constants.NULL_VALUE);
                 renderedItems.Add(itemRenderer.Render(format));
             }
+
+            //format the list
             string output = format == OutputFormat.Javascript
                 ? FormatAsJavascript(renderedItems)
                 : FormatAsHtml(renderedItems);
@@ -78,19 +133,29 @@ namespace GFBD.Scripper
 
         private static string FormatAsHtml(List<string> renderedItems)
         {
-            throw new NotImplementedException();
+            StringBuilder output = new StringBuilder(Constants.HTML_LIST_OPEN);
+            string listItems = string.Join("",
+                renderedItems.Select(s => Constants.HTML_LIST_ITEM_OPEN + s + Constants.HTML_LIST_ITEM_CLOSE)
+                );
+            output.Append(listItems);
+            output.Append(Constants.HTML_LIST_CLOSE);
+            return output.ToString();
         }
 
         private static string FormatAsJavascript(List<string> renderedItems)
         {
-            string output = ConstEnum.JS_ARRAY_OPEN + string.Join(",", renderedItems) + ConstEnum.JS_ARRAY_CLOSE;
-            return output;
+            StringBuilder output = new StringBuilder(Constants.JS_ARRAY_OPEN);
+            output.Append(string.Join(",", renderedItems));
+            output.Append(Constants.JS_ARRAY_CLOSE);
+            return output.ToString();
         }
        
     }
 
    
-
+    /// <summary>
+    /// Renderer for types that can be represented as hash tables (Dictionaries)
+    /// </summary>
     internal class DictionaryRenderer : IRenderer
     {
         public IDictionary Items { get; private set; }
@@ -99,17 +164,21 @@ namespace GFBD.Scripper
         {
             Items = obj;
         }
+
         public string Render(OutputFormat format)
         {
             Dictionary<string, string> renderedPairs = new Dictionary<string, string>();
             foreach(var key in Items.Keys)
             {
-                var keyRenderer = RendererFactory.GetRenderer(key);
+                //build appropriate renderings for the Key and Value
+                var keyRenderer = RendererFactory.GetRenderer(key ?? Constants.NULL_VALUE);
                 string renderedKey = keyRenderer.Render(format);
-                var valueRenderer = RendererFactory.GetRenderer(Items[key]);
+                var valueRenderer = RendererFactory.GetRenderer(Items[key] ?? Constants.NULL_VALUE);
                 string renderedVal = valueRenderer.Render(format);
                 renderedPairs.Add(renderedKey, renderedVal);
             }
+
+            //format the Dictionary
             string output = format == OutputFormat.Javascript
                 ? FormatAsJavascript(renderedPairs)
                 : FormatAsHtml(renderedPairs);
@@ -118,19 +187,24 @@ namespace GFBD.Scripper
 
         private static string FormatAsHtml(Dictionary<string, string> renderedPairs)
         {
-            throw new NotImplementedException();
+            StringBuilder output = new StringBuilder(Constants.HTML_DICT_OPEN);
+            foreach(var pair in renderedPairs)
+            {
+                output.Append(Constants.HTML_DICT_KEY_OPEN + pair.Key + Constants.HTML_DICT_KEY_CLOSE);
+                output.Append(Constants.HTML_DICT_VAL_OPEN + pair.Value + Constants.HTML_DICT_VAL_CLOSE);
+            }
+            output.Append(Constants.HTML_DICT_CLOSE);
+            return output.ToString();
         }
 
         private static string FormatAsJavascript(Dictionary<string, string> renderedPairs)
         {
-            StringBuilder output = new StringBuilder();
-            output.Append(ConstEnum.JS_DICT_OPEN);
+            StringBuilder output = new StringBuilder(Constants.JS_DICT_OPEN);
             string formattedPairs = string.Join(
                 ",",
-                renderedPairs.Select(kvp => kvp.Key + ConstEnum.JS_DICT_SEP + kvp.Value));
-            output.Append(formattedPairs);
-            
-            output.Append(ConstEnum.JS_DICT_CLOSE);
+                renderedPairs.Select(kvp => kvp.Key + Constants.JS_DICT_SEP + kvp.Value));
+            output.Append(formattedPairs);            
+            output.Append(Constants.JS_DICT_CLOSE);
             return output.ToString();
         }
     }
