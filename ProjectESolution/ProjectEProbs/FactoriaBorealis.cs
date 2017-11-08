@@ -11,6 +11,7 @@ namespace ProjectEProbs
     {
         public static BigInteger Factorial(long n)
         {
+            //TODO make tail-recursive (add private func with accumulator arg)
             if (n < 3) { return n * 1; }
             else if (n == 3) { return 6; }
             else if (n == 4) { return 24; }
